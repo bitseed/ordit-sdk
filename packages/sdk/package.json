@@ -1,6 +1,6 @@
 {
   "name": "@sadoprotocol/ordit-sdk",
-  "version": "0.0.28",
+  "version": "2.4.9",
   "description": "SDK for simplified interaction with wallet APIs and inscription service",
   "repository": "https://github.com/sadoprotocol/ordit-sdk",
   "bugs": "https://github.com/sadoprotocol/ordit-sdk/issues",
@@ -8,7 +8,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "keywords": [
     "ordit",

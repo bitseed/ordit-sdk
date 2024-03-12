@@ -2,9 +2,17 @@
 import cbor from 'cbor';
 import { InscriptionID } from "./types";
 
+
+
 export function encodeNumber(num: number): Buffer {
   const buffer = Buffer.alloc(4)
   buffer.writeInt32BE(num);
+  return buffer;
+}
+
+export function encodeTag(tag: number): Buffer {
+  const buffer = Buffer.alloc(1)
+  buffer.writeInt8(tag);
   return buffer;
 }
 

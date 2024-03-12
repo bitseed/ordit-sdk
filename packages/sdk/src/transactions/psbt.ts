@@ -2,7 +2,7 @@ import * as ecc from "@bitcoinerlab/secp256k1"
 import { BIP32Factory } from "bip32"
 
 import { Network } from "../config/types"
-import { BaseDatasource, JsonRpcDatasource } from "../modules"
+import { IDatasource, JsonRpcDatasource } from "../modules"
 import { createTransaction, getNetwork, toXOnly } from "../utils"
 import { OrditSDKError } from "../utils/errors"
 import { OnOffUnion } from "../wallet"
@@ -14,6 +14,7 @@ const bip32 = BIP32Factory(ecc)
 export async function createPsbt({
   pubKey,
   network,
+  datasource,
   address,
   outputs,
   satsPerByte,
@@ -27,6 +28,7 @@ export async function createPsbt({
     address,
     feeRate: satsPerByte,
     network,
+    datasource,
     publicKey: pubKey,
     outputs
   })
@@ -203,6 +205,7 @@ export type CreatePsbtOptions = {
   enableRBF?: boolean
   pubKey: string
   network: Network
+  datasource?: IDatasource
   safeMode?: OnOffUnion
 }
 
@@ -212,7 +215,7 @@ interface ProcessInputOptions {
   network: Network
   sighashType?: number
   witness?: Buffer[]
-  datasource?: BaseDatasource
+  datasource?: IDatasource
 }
 
 interface TapScript {

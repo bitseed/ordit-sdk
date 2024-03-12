@@ -3,6 +3,7 @@ import * as bitcoin from "bitcoinjs-lib"
 import { Tapleaf } from "bitcoinjs-lib/src/types"
 
 import {
+  IDatasource,
   InscriptionID,
   buildWitnessScript,
   createTransaction,
@@ -53,6 +54,7 @@ export class Inscriber extends PSBTBuilder {
     network,
     address,
     changeAddress,
+    datasource,
     destinationAddress,
     publicKey,
     feeRate,
@@ -67,6 +69,7 @@ export class Inscriber extends PSBTBuilder {
     super({
       address,
       changeAddress,
+      datasource,
       feeRate,
       network,
       publicKey,
@@ -338,6 +341,7 @@ export class Inscriber extends PSBTBuilder {
 export type InscriberArgOptions = Pick<GetWalletOptions, "safeMode"> & {
   network: Network
   address: string
+  datasource?: IDatasource,
   destinationAddress: string
   publicKey: string
   feeRate: number

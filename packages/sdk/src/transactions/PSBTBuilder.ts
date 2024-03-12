@@ -3,7 +3,7 @@ import { networks, Psbt, Transaction } from "bitcoinjs-lib"
 import reverseBuffer from "buffer-reverse"
 
 import {
-  BaseDatasource,
+  IDatasource,
   convertSatoshisToBTC,
   generateTxUniqueIdentifier,
   getNetwork,
@@ -28,7 +28,7 @@ export interface PSBTBuilderOptions {
   publicKey: string
   autoAdjustment?: boolean
   instantTradeMode?: boolean
-  datasource?: BaseDatasource
+  datasource?: IDatasource
 }
 
 export type InjectableInput = {
@@ -49,7 +49,7 @@ export class PSBTBuilder extends FeeEstimator {
   protected address: string
   protected changeAddress?: string
   protected changeAmount = 0
-  protected datasource: BaseDatasource
+  protected datasource: IDatasource
   protected injectableInputs: InjectableInput[] = []
   protected injectableOutputs: InjectableOutput[] = []
   protected inputAmount = 0
@@ -163,7 +163,7 @@ export class PSBTBuilder extends FeeEstimator {
   }
 
   private injectInput(injectable: InjectableInput) {
-    ;(this.psbt.data.globalMap.unsignedTx as any).tx.ins[injectable.injectionIndex] = injectable.txInput
+    ; (this.psbt.data.globalMap.unsignedTx as any).tx.ins[injectable.injectionIndex] = injectable.txInput
     this.psbt.data.inputs[injectable.injectionIndex] = injectable.standardInput
   }
 
@@ -173,7 +173,7 @@ export class PSBTBuilder extends FeeEstimator {
     do {
       const isReserved = !!(this.psbt.data.globalMap.unsignedTx as any).tx.outs[potentialIndex]
       if (!isReserved) {
-        ;(this.psbt.data.globalMap.unsignedTx as any).tx.outs[potentialIndex] = injectable.txOutput
+        ; (this.psbt.data.globalMap.unsignedTx as any).tx.outs[potentialIndex] = injectable.txOutput
         this.psbt.data.outputs[potentialIndex] = injectable.standardOutput
         break
       }
@@ -251,7 +251,7 @@ export class PSBTBuilder extends FeeEstimator {
   private calculateOutputAmount() {
     this.outputAmount = Math.floor(
       this.outputs.reduce((acc, curr) => (acc += curr.value), 0) +
-        this.injectableOutputs.reduce((acc, curr) => (acc += curr.sats), 0)
+      this.injectableOutputs.reduce((acc, curr) => (acc += curr.sats), 0)
     )
 
     this.validateOutputAmount()
@@ -289,8 +289,8 @@ export class PSBTBuilder extends FeeEstimator {
       amount && amount > 0
         ? amount
         : this.changeAmount < 0
-        ? this.changeAmount * -1
-        : this.outputAmount - this.getRetrievedUTXOsValue()
+          ? this.changeAmount * -1
+          : this.outputAmount - this.getRetrievedUTXOsValue()
 
     if ((amount && this.getRetrievedUTXOsValue() >= amount) || amountToRequest <= 0) return
 
